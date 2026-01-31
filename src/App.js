@@ -118,7 +118,7 @@ Prakash la sangu shaktes ki kakane Hadapsar la bolavly as kytri mhanje to video 
           </div>
         </section>
       </main>
-    </div>
+g    </div>
   );
 }
 
