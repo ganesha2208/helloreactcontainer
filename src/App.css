@@ -1,38 +1,473 @@
-.App {
-  text-align: center;
+/* Base layout */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  background: #020617;
+  color: #e5e7eb;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background madness */
+
+.gradient-orbit {
+  position: fixed;
+  border-radius: 999px;
+  filter: blur(80px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gradient-orbit-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle at 30% 20%, #22c55e, transparent 60%),
+    radial-gradient(circle at 80% 80%, #0ea5e9, transparent 55%);
+  top: -80px;
+  left: -60px;
+  animation: orbit1 26s linear infinite alternate;
+}
+
+.gradient-orbit-2 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle at 20% 80%, #f97316, transparent 55%),
+    radial-gradient(circle at 80% 20%, #a855f7, transparent 60%);
+  bottom: -120px;
+  right: -100px;
+  animation: orbit2 32s linear infinite alternate;
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  opacity: 0.16;
+  pointer-events: none;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  mix-blend-mode: soft-light;
+  z-index: 0;
+}
+
+/* Shell / two-column layout */
+
+.shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1120px;
+  width: 100%;
+  padding: 32px 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: stretch;
+}
+
+/* Left pane */
+
+.left-pane {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 28px 18px 28px 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a5b4fc;
+  border: 1px solid rgba(129, 140, 248, 0.5);
+  background: linear-gradient(
+    120deg,
+    rgba(15, 23, 42, 0.8),
+    rgba(30, 64, 175, 0.4)
+  );
+  backdrop-filter: blur(18px);
+}
+
+.hero-heading {
+  margin: 18px 0 8px;
+  font-size: 2.6rem;
+  line-height: 1.1;
+  letter-spacing: 0.03em;
+  color: #f9fafb;
+}
+
+.hero-gradient {
+  display: block;
+  background: linear-gradient(120deg, #22c55e, #0ea5e9, #a855f7);
+  background-size: 160% 160%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-gradient 10s ease infinite;
+}
+
+.hero-copy {
+  margin: 8px 0;
+  font-size: 0.98rem;
+  color: #e5e7eb;
+  max-width: 520px;
+}
+
+.hero-copy.subtle {
+  color: #9ca3af;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: #e5e7eb;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+/* Right pane / glass card */
+
+.right-pane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-card {
+  position: relative;
+  width: 100%;
+  padding: 22px 20px 20px;
+  border-radius: 26px;
+  background: radial-gradient(circle at top left, #1f2937 0%, #020617 65%);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  box-shadow:
+    0 24px 70px rgba(15, 23, 42, 0.9),
+    0 0 0 1px rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(22px) saturate(160%);
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.6), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.6), transparent 60%);
+  opacity: 0.18;
+  mix-blend-mode: screen;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.card-title {
+  position: relative;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9ca3af;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.card-sub {
+  position: relative;
+  margin: 4px 0 16px;
+  font-size: 0.9rem;
+  color: #e5e7eb;
+}
+
+/* Choice grid */
+
+.choice-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* Choice cards */
+
+.choice-card {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  overflow: hidden;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
+}
+
+.choice-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(34, 197, 94, 0.1), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.choice-card h3 {
+  margin: 0 0 2px;
+  font-size: 0.98rem;
+  color: #f9fafb;
+}
+
+.choice-card p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #9ca3af;
+}
+
+.choice-tag {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 18px;
+  height: 18px;
+  margin-bottom: 4px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  color: #e5e7eb;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.7);
 }
 
-.App-link {
-  color: #61dafb;
+.choice-content {
+  position: relative;
+  z-index: 1;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Emoji bubble */
+
+.emoji-bubble {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.9);
+  transform: translateY(0) scale(1);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+}
+
+.emoji-bubble::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.7), transparent 60%);
+  opacity: 0.35;
+}
+
+/* Different gradients per emotion */
+
+.emoji-bubble.happy {
+  background: conic-gradient(from 180deg, #22c55e, #22c55e, #22c55e, #a3e635);
+}
+
+.emoji-bubble.sad {
+  background: conic-gradient(from 180deg, #0ea5e9, #1d4ed8, #38bdf8, #0ea5e9);
+}
+
+.emoji-bubble.secret {
+  background: conic-gradient(from 180deg, #a855f7, #ec4899, #fb7185, #a855f7);
+}
+
+.emoji-bubble.think {
+  background: conic-gradient(from 180deg, #f97316, #eab308, #22c55e, #f97316);
+}
+
+/* Hover & active states */
+
+.choice-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.95),
+    0 0 24px rgba(56, 189, 248, 0.35);
+  border-color: rgba(129, 230, 217, 0.9);
+  background: radial-gradient(circle at top left, #0b1120, #020617);
+}
+
+.choice-card:hover::after {
+  opacity: 1;
+}
+
+.choice-card:hover .emoji-bubble {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 1),
+    0 0 26px rgba(59, 130, 246, 0.7);
+  filter: saturate(1.4);
+}
+
+/* Selected state (clicked) */
+
+.choice-card.active {
+  border-color: rgba(129, 230, 217, 1);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 1),
+    0 0 0 1px rgba(34, 197, 94, 0.7);
+}
+
+.choice-card.active::after {
+  opacity: 0.75;
+}
+
+.choice-card.active .emoji-bubble {
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* Note & selected pill */
+
+.tiny-note {
+  position: relative;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+.highlight {
+  color: #a5b4fc;
+  font-weight: 500;
+}
+
+.selected-pill {
+  position: relative;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #e5e7eb;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(129, 230, 217, 0.9);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 0%, #22c55e, #0ea5e9);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+}
+
+.selected-code {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #22c55e, #0ea5e9);
+  color: #020617;
+  font-weight: 600;
+}
+
+/* Animations */
+
+@keyframes text-gradient {
+  0% {
+    background-position: 0% 50%;
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes orbit1 {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(40px, -20px, 0) rotate(90deg);
+  }
+  100% {
+    transform: translate3d(10px, 10px, 0) rotate(180deg);
+  }
+}
+
+@keyframes orbit2 {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-40px, 30px, 0) rotate(-90deg);
+  }
+  100% {
+    transform: translate3d(-10px, -20px, 0) rotate(-180deg);
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 28px 16px 40px;
+  }
+
+  .left-pane {
+    padding: 4px 2px 12px;
+    text-align: left;
+  }
+
+  .hero-heading {
+    font-size: 2.1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-heading {
+    font-size: 1.8rem;
+  }
+
+  .glass-card {
+    padding: 18px 14px 16px;
+  }
+
+  .emoji-bubble {
+    width: 40px;
+    height: 40px;
+    font-size: 1.6rem;
   }
 }
